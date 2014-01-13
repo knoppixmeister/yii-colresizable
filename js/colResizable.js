@@ -12,7 +12,6 @@
 
 	//shortcuts
 	var I = parseInt;
-	var M = Math;
 	var ie =$.browser.msie;
 
 	var S;
@@ -76,7 +75,8 @@
 			if (i < t.ln-1)	g.mousedown(onGripMouseDown).append(t.opt.gripInnerHtml).append('<div class="'+SIGNATURE+'" style="cursor:'+t.opt.hoverCursor+'"></div>'); //bind the mousedown event to start dragging 
 			else g.addClass("JCLRLastGrip").removeClass("JCLRgrip");	//the last grip is used only to store data			
 			g.data(SIGNATURE, {i:i, t:t.attr(ID)});						//grip index and its table name are stored in the HTML 												
-		}); 	
+		});
+
 		t.cg.removeAttr("width");	//remove the width attribute from elements in the colgroup (in any)
 		syncGrips(t); 				//the grips are positioned according to the current table layout			
 		//there is a small problem, some cells in the table could contain dimension values interfering with the 
@@ -92,7 +92,7 @@
 	 * @param {jQuery ref} t - table object
 	 * @param {jQuery ref} th - reference to the first row elements (only set in deserialization)
 	 */
-	var memento = function(t, th){ 
+	var memento = function(t, th) { 
 		var w,m=0,i=0,aux =[];
 		if(th){										//in deserialization mode (after a postback)
 			t.cg.removeAttr("width");
@@ -115,15 +115,14 @@
 										//to be able to obtain % width value of each columns while deserializing
 		}	
 	};
-	
-	
+
 	/**
 	 * Function that places each grip in the correct position according to the current table layout	 * 
 	 * @param {jQuery ref} t - table object
 	 */
-	var syncGrips = function (t){	
-		t.gc.width(t.w);			//the grip's container width is updated				
-		for(var i=0; i<t.ln; i++){	//for each column
+	var syncGrips = function(t) {
+		t.gc.width(t.w);		 	//the grip's container width is updated				
+		for(var i=0; i<t.ln; i++) {	//for each column
 			var c = t.c[i]; 			
 			t.g[i].css({			//height and position of the grip is updated according to the table layout
 				left: c.offset().left - t.offset().left + c.outerWidth() + t.cs / 2 + PX,
@@ -131,9 +130,7 @@
 			});			
 		} 	
 	};
-	
-	
-	
+
 	/**
 	* This function updates column's width according to the horizontal position increment of the grip being
 	* dragged. The function can be called while dragging if liveDragging is enabled and also from the onGripDragOver
@@ -142,7 +139,7 @@
 	* @param {nunmber} i - index of the grip being dragged
 	* @param {bool} isOver - to identify when the function is being called from the onGripDragOver event	
 	*/
-	var syncCols = function(t,i,isOver){
+	var syncCols = function(t,i,isOver) {
 		var inc = drag.x-drag.l, c = t.c[i], c2 = t.c[i+1]; 			
 		var w = c.w + inc;	var w2= c2.w- inc;	//their new width is obtained					
 		c.width( w + PX);	c2.width(w2 + PX);	//and set	
@@ -150,12 +147,11 @@
 		if(isOver){c.w=w; c2.w=w2;}
 	};
 
-	
 	/**
 	 * Event handler used while dragging a grip. It checks if the next grip's position is valid and updates it. 
 	 * @param {event} e - mousemove event binded to the window object
 	 */
-	var onGripDrag = function(e){	
+	var onGripDrag = function(e) {	
 		if(!drag) return; var t = drag.t;		//table object reference 
 		var x = e.pageX - drag.ox + drag.l;		//next position according to horizontal mouse position increment
 		var mw = t.opt.minWidth, i = drag.i ;	//cell's min width
@@ -163,25 +159,24 @@
 
 		var max = i == t.ln-1? t.w-l: t.g[i+1].position().left-t.cs-mw; //max position according to the contiguous cells
 		var min = i? t.g[i-1].position().left+t.cs+mw: l;				//min position according to the contiguous cells
-		
-		x = M.max(min, M.min(max, x));						//apply boundings		
-		drag.x = x;	 drag.css("left",  x + PX); 			//apply position increment		
-			
-		if(t.opt.liveDrag){ 								//if liveDrag is enabled
+
+		x = Math.max(min, Math.min(max, x));						//apply boundings		
+		drag.x = x;
+		drag.css("left",  x + PX); 			//apply position increment		
+
+		if(t.opt.liveDrag) { 								//if liveDrag is enabled
 			syncCols(t,i); syncGrips(t);					//columns and grips are synchronized
 			var cb = t.opt.onDrag;							//check if there is an onDrag callback
 			if (cb) { e.currentTarget = t[0]; cb(e); }		//if any, it is fired			
 		}
-		
+
 		return false; 	//prevent text selection				
 	};
-	
 
 	/**
 	 * Event handler fired when the dragging is over, updating table layout
 	 */
-	var onGripDragOver = function(e){	
-		
+	var onGripDragOver = function(e) {
 		d.unbind('mousemove.'+SIGNATURE).unbind('mouseup.'+SIGNATURE);
 		$("head :last-child").remove(); 				//remove the dragging cursor style	
 		if(!drag) return;
@@ -190,7 +185,8 @@
 		if(drag.x){ 									//only if the column width has been changed
 			syncCols(t,drag.i, true);	syncGrips(t);	//the columns and grips are updated
 			if (cb) { e.currentTarget = t[0]; cb(e); }	//if there is a callback function, it is fired
-		}	
+		}
+
 		if(t.p && S) memento(t); 						//if postbackSafe is enabled and there is sessionStorage support, the new layout is serialized and stored
 		drag = null;									//since the grip's dragging is over									
 	};	

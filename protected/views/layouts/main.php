@@ -5,6 +5,8 @@
 	<meta name="language" content="en"/>
 
 	<title>Test app</title>
+
+	<?php Yii::app()->clientScript->registerCoreScript('jquery')?>
 </head>
 <body>
 	<?php echo $content?>

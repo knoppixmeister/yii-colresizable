@@ -2,6 +2,8 @@
 
 	class SiteController extends CController {
 		public function actionIndex() {
-			$this->render('index');
-		}	
+			$model = new Post();
+
+			$this->render('index', array('model' => $model));
+		}
 	}

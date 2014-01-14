@@ -242,7 +242,7 @@
 		if(t.c[o.i].l) for(var i=0,c; i<t.ln; i++){ c=t.c[i]; c.l = false; c.w= c.width(); } 	//if the colum is locked (after browser resize), then c.w must be updated		
 		return false; 	//prevent text selection
 	};
-	
+
 	/**
 	 * Event handler fired when the browser is resized. The main purpose of this function is to update
 	 * table layout according to the browser's size synchronizing related grips 
@@ -251,7 +251,7 @@
 		for(t in tables){		
 			var t = tables[t], i, mw=0;				
 			t.removeClass(SIGNATURE);						//firefox doesnt like layout-fixed in some cases
-			if (t.w != t.width()) {							//if the the table's width has changed
+			if(t.w != t.width()) {							//if the the table's width has changed
 				t.w = t.width();							//its new value is kept
 				for(i=0; i<t.ln; i++) mw+= t.c[i].w;		//the active cells area is obtained
 				//cell rendering is not as trivial as it might seem, and it is slightly different for
@@ -261,23 +261,21 @@
 				for(i=0; i<t.ln; i++) t.c[i].css("width", M.round(1000*t.c[i].w/mw)/10 + "%").l=true; 
 				//c.l locks the column, telling us that its c.w is outdated									
 			}
+
 			syncGrips(t.addClass(SIGNATURE));
 		}
-	};		
-
+	};
 
 	//bind resize event, to update grips position 
 	$(window).bind('resize.'+SIGNATURE, onResize); 
-
 
 	/**
 	 * The plugin is added to the jQuery library
 	 * @param {Object} options -  an object containg some basic customization values 
 	 */
-    $.fn.extend({  
-        colResizable: function(options) {           
+    $.fn.extend({
+        colResizable: function(options) {
             var defaults = {
-			
 				//attributes:
                 draggingClass: 'JCLRgripDrag',	//css-class used when a grip is being dragged (for visual feedback purposes)
 				gripInnerHtml: '',				//if it is required to use a custom grip it can be done using some custom HTML				
@@ -291,16 +289,17 @@
 				marginLeft: null,				//in case the table contains any margins, colResizable needs to know the values used, e.g. "10%", "15em", "5px" ...
 				marginRight: null, 				//in case the table contains any margins, colResizable needs to know the values used, e.g. "10%", "15em", "5px" ...
 				disable: false,					//disables all the enhancements performed in a previously colResized table	
-				
+
 				//events:
 				onDrag: null, 					//callback function to be fired during the column resizing process if liveDrag is enabled
 				onResize: null					//callback function fired when the dragging process is over
-            }			
-			var options =  $.extend(defaults, options);			
-            return this.each(function() {				
-             	init( this, options);             
+            };
+
+            var options =  $.extend(defaults, options);
+
+            return this.each(function() {
+            	init(this, options);
             });
         }
     });
 })(jQuery);
-

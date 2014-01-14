@@ -4,6 +4,7 @@
 	$this->widget(
 		'zii.widgets.grid.CGridView',
 		array(
+			//'cssFile'			=>	false,
 			'afterAjaxUpdate'	=>	'lala',
 			'dataProvider'		=>	$model->search(),
 			'filter'			=>	$model,
@@ -20,7 +21,7 @@
 
 <script type="text/javascript">
 	$(function() {
-		$('table').colResizable();
+		lala();
 	});
 
 	function lala() {
@@ -35,3 +36,10 @@
 	});
 	*/
 </script>
+
+<style>
+	tr.filters td {
+		padding-right: 5px;
+		padding-left: 5px;
+	}
+</style>

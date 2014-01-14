@@ -6,4 +6,8 @@
 
 			$this->render('index', array('model' => $model));
 		}
+
+		public function actionError() {
+			echo 'error';
+		}
 	}

@@ -11,4 +11,4 @@ All settings options saved from original version.
 
 Requires JQuery code.
 
--- Fixed bug with <thead> when there are many <tr> rows with <th> or/and <td>
+-- Fixed bug with &lt;thead&gt; when there are many <tr> rows with <th> or/and <td>

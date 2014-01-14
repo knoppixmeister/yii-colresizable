@@ -1,19 +1,24 @@
 /**
+	CUSTOM colResizable realization optimized for Yii's CGridView component.
+	It made possible to change width of it columns.
+
+	-- Fixed bug when in <thead> there are many <tr> rows with <th> or/and <td>
+
+	---------------------------------------------------------------------
                _ _____           _          _     _      
               | |  __ \         (_)        | |   | |     
       ___ ___ | | |__) |___  ___ _ ______ _| |__ | | ___ 
      / __/ _ \| |  _  // _ \/ __| |_  / _` | '_ \| |/ _ \
     | (_| (_) | | | \ \  __/\__ \ |/ / (_| | |_) | |  __/
      \___\___/|_|_|  \_\___||___/_/___\__,_|_.__/|_|\___|
-	 
+
 	v 1.3 - a jQuery plugin by Alvaro Prieto Lauroba
-	
+
 	Licences: MIT & GPL
 	Feel free to use or modify this plugin as far as my full name is kept	
-	
+
 	If you are going to use this plugin in production environments it is 
 	strongly recomended to use its minified version: colResizable.min.js
-
 */
 (function($) {
 	var d = $(document); 		//window object
@@ -81,8 +86,10 @@
 		//var th = t.find(">thead>tr>th,>thead>tr>td");	//if table headers are specified in its semantically correct tag, are obtained
 		//if(!th.length) th = t.find(">tbody>tr:first>th,>tr:first>th,>tbody>tr:first>td, >tr:first>td");	 //but headers can also be included in different ways
 
+		//-- bug fix place start ----------------------------
 		var th = t.find("tr:first th");
 		if(!th.length) th = t.find("tr:first td");
+		//-- bug fix place end ------------------------------
 
 		t.cg = t.find("col"); 						//a table can also contain a colgroup with col elements		
 		t.ln = th.length;							//table length is stored	

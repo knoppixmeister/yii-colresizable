@@ -2,7 +2,7 @@
 
 	class SiteController extends CController {
 		public function actionIndex() {
-			$model = new Post();
+			$model = new Post('search');
 
 			$this->render('index', array('model' => $model));
 		}

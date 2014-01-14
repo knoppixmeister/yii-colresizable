@@ -5,7 +5,25 @@
 			return 'posts';
 		}
 
+		public function rules() {
+			return	array(
+						array('id', 'type', 'type' => 'integer'),
+					);
+		}
+
 		public function search() {
-			return new CActiveDataProvider('Post');
+			$criteria = new CDbCriteria;
+
+			if(!empty($this->id)) $criteria->compare('id', $this->id, true);
+
+			return new CActiveDataProvider(
+							'Post',
+							array(
+								'criteria'		=>	$criteria,
+								'pagination'	=>	array(
+														'pageSize'	=>	20,
+													),
+							)
+						);
 		}
 	}

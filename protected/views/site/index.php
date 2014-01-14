@@ -9,6 +9,11 @@
 			'dataProvider'		=>	$model->search(),
 			'filter'			=>	$model,
 			'columns'			=>	array(
+										array(
+											'class'				=>	'CCheckBoxColumn',
+											'selectableRows'	=>	2,
+											'headerHtmlOptions'	=>	array('style' => 'width: 30px;'),
+										),
 										'id',
 										'text',
 										array(            // display a column with "view", "update" and "delete" buttons

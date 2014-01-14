@@ -4,7 +4,7 @@
 	Based on v. 1.3 of JQuery.colResizable -> http://quocity.com/colresizable/#download
 	All settings options saved from original version.
 
-	-- Fixed bug when in <thead> there are many <tr> rows with <th> or/and <td>
+	-- Fixed bug with <thead> when there are many <tr> rows with <th> or/and <td>
 
 	---------------------------------------------------------------------
                _ _____           _          _     _      

@@ -123,11 +123,11 @@
 	var syncGrips = function(table) {
 		table.gc.width(table.w);		 	//the grip's container width is updated				
 		for(var i=0; i<table.ln; i++) {	//for each column
-			var c = table.c[i]; 			
+			var column = table.c[i]; 			
 			table.g[i].css({			//height and position of the grip is updated according to the table layout
-				left:	c.offset().left-
+				left:	column.offset().left-
 						table.offset().left+
-						c.outerWidth()+table.cs/2+PX,
+						column.outerWidth()+table.cs/2+PX,
 				height:	table.opt.headerOnly ?
 						table.c[0].outerHeight() :
 						table.outerHeight()
@@ -144,9 +144,11 @@
 	* @param {bool} isOver - to identify when the function is being called from the onGripDragOver event	
 	*/
 	var syncCols = function(table, index, isOver) {
-		console.log( index	);
+		console.log( "IDX: "+index	);
 
 		var inc = drag.x-drag.l;
+
+		if(inc == 0) return;
 
 		console.log("INC: "+inc);
 
@@ -194,15 +196,17 @@
 		var i = drag.i;	//cell's min width
 		var l = t.cs*1.5 + mw + t.b;
 
-		var max = i == t.ln-1? t.w-l: t.g[i+1].position().left-t.cs-mw; //max position according to the contiguous cells
+		var max = i == t.ln-1 ? t.w-l :
+								t.g[i+1].position().left-t.cs-mw; //max position according to the contiguous cells
 		var min = i ? t.g[i-1].position().left+t.cs+mw : l;				//min position according to the contiguous cells
 
-		x = Math.max(min, Math.min(max, x));						//apply boundings		
+		x = Math.max(min, Math.min(max, x));						//apply boundings
 		drag.x = x;
 		drag.css("left", x+PX); 			//apply position increment		
 
 		if(t.opt.liveDrag) { 								//if liveDrag is enabled
-			syncCols(t,i); syncGrips(t);					//columns and grips are synchronized
+			//syncCols(t, i);
+			//syncGrips(t);									//columns and grips are synchronized
 			var cb = t.opt.onDrag;							//check if there is an onDrag callback
 			if(cb) {
 				e.currentTarget = t[0];
@@ -226,7 +230,8 @@
 		drag.removeClass(drag.t.opt.draggingClass);		//remove the grip's dragging css-class
 		var t = drag.t;
 		var cb = t.opt.onResize; 			//get some values	
-		if(drag.x){ 									//only if the column width has been changed
+
+		if(drag.x) { 									//only if the column width has been changed
 			syncCols(t, drag.i, true);
 			syncGrips(t);	//the columns and grips are updated
 			if(cb) {
@@ -246,13 +251,24 @@
 	 */
 	var onGripMouseDown = function(e) {
 		var o = $(this).data(SIGNATURE);			//retrieve grip's data
-		var t = tables[o.t],  g = t.g[o.i];			//shortcuts for the table and grip objects
-		g.ox = e.pageX;	g.l = g.position().left;	//the initial position is kept				
+
+		console.log(o);
+
+		var t = tables[o.t];
+
+		var grip = t.g[o.i];			//shortcuts for the table and grip objects
+		//var grip = t.g[0];
+
+		grip.ox = e.pageX;
+		grip.l = grip.position().left;	//the initial position is kept
+
 		$(document).bind('mousemove.'+SIGNATURE, onGripDrag)
-					.bind('mouseup.'+SIGNATURE,onGripDragOver);	//mousemove and mouseup events are bound
-		$("head").append("<style type='text/css'>*{cursor:"+ t.opt.dragCursor +"!important}</style>"); 	//change the mouse cursor
-		g.addClass(t.opt.draggingClass); 	//add the dragging class (to allow some visual feedback)				
-		drag = g;							//the current grip is stored as the current dragging object
+					.bind('mouseup.'+SIGNATURE, onGripDragOver);	//mousemove and mouseup events are bound
+
+		$("head").append("<style type='text/css'>*{cursor:"+t.opt.dragCursor+"!important}</style>"); 	//change the mouse cursor
+
+		grip.addClass(t.opt.draggingClass); 	//add the dragging class (to allow some visual feedback)				
+		drag = grip;							//the current grip is stored as the current dragging object
 		if(t.c[o.i].l) {
 			for(var i=0; i<t.ln; i++) {
 				var c = t.c[i];

@@ -1,7 +1,7 @@
 yii-colresizable
 ================
 
-Custom JQuery.colResizable realization optimized for Yii's CGridView component.
+Custom JQuery.colResizable realization optimized for Yii's CGridView component as well as for regular html tables.
 
 It made possible to change width of CGridView columns.
 

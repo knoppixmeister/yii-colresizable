@@ -96,18 +96,16 @@
 			if (i < t.ln-1)	g.mousedown(onGripMouseDown).append(t.opt.gripInnerHtml).append('<div class="'+SIGNATURE+'" style="cursor:'+t.opt.hoverCursor+'"></div>'); //bind the mousedown event to start dragging 
 			else g.addClass("JCLRLastGrip").removeClass("JCLRgrip");	//the last grip is used only to store data			
 			g.data(SIGNATURE, {i:i, t:t.attr(ID)});						//grip index and its table name are stored in the HTML 												
-		}); 	
+		});
+
 		t.cg.removeAttr("width");	//remove the width attribute from elements in the colgroup (in any)
 		syncGrips(t); 				//the grips are positioned according to the current table layout			
 		//there is a small problem, some cells in the table could contain dimension values interfering with the 
 		//width value set by this plugin. Those values are removed
 		t.find('td, th').not(th).not('table th, table td').each(function(){  
 			$(this).removeAttr('width');	//the width attribute is removed from all table cells which are not nested in other tables and dont belong to the header
-		});		
-
-		
+		});
 	};
-	
 
 	/**
 	 * Function to allow the persistence of columns dimensions after a browser postback. It is based in

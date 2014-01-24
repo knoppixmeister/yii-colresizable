@@ -39,18 +39,21 @@
 	var M = Math;
 	var ie =$.browser.msie;
 	var S;
-	try{S = sessionStorage;}catch(e){}	//Firefox crashes when executed as local file system
-	
+	try {
+		S = sessionStorage;
+	}
+	catch(e) {
+	}//Firefox crashes when executed as local file system
+
 	//append required CSS rules  
 	h.append("<style type='text/css'>  .JColResizer{table-layout:fixed;} .JColResizer td, .JColResizer th{overflow:hidden;padding-left:0!important; padding-right:0!important;}  .JCLRgrips{ height:0px; position:relative;} .JCLRgrip{margin-left:-5px; position:absolute; z-index:5; } .JCLRgrip .JColResizer{position:absolute;background-color:red;filter:alpha(opacity=1);opacity:0;width:10px;height:100%;top:0px} .JCLRLastGrip{position:absolute; width:1px; } .JCLRgripDrag{ border-left:1px dotted black;	}</style>");
 
-	
 	/**
 	 * Function to allow column resizing for table objects. It is the starting point to apply the plugin.
 	 * @param {DOM node} tb - refrence to the DOM table object to be enhanced
 	 * @param {Object} options	- some customization values
 	 */
-	var init = function( tb, options){	
+	var init = function(tb, options) {	
 		var t = $(tb);										//the table object is wrapped
 		if(options.disable) return destroy(t);				//the user is asking to destroy a previously colResized table
 		var	id = t.id = t.attr(ID) || SIGNATURE+count++;	//its id is obtained, if null new one is generated		
@@ -65,15 +68,13 @@
 		// if(!(tb.style.width || tb.width)) t.width(t.width()); //I am not an IE fan at all, but it is a pitty that only IE has the currentStyle attribute working as expected. For this reason I can not check easily if the table has an explicit width or if it is rendered as "auto"
 		tables[id] = t; 	//the table object is stored using its id as key	
 		createGrips(t);		//grips are created
-	
 	};
-
 
 	/**
 	 * This function allows to remove any enhancements performed by this plugin on a previously processed table.
 	 * @param {jQuery ref} t - table object
 	 */
-	var destroy = function(t){
+	var destroy = function(t) {
 		var id=t.attr(ID), t=tables[id];		//its table object is found
 		if(!t||!t.is("table")) return;			//if none, then it wasnt processed	 
 		t.removeClass(SIGNATURE).gc.remove();	//class and grips are removed
@@ -84,7 +85,7 @@
 	 * Function to create all the grips associated with the table given by parameters 
 	 * @param {jQuery ref} t - table object
 	 */
-	var createGrips = function(t) { 
+	var createGrips = function(t) {
 		//var th = t.find(">thead>tr>th,>thead>tr>td");	//if table headers are specified in its semantically correct tag, are obtained
 		//if(!th.length) th = t.find(">tbody>tr:first>th,>tr:first>th,>tbody>tr:first>td, >tr:first>td");	 //but headers can also be included in different ways
 
@@ -96,13 +97,13 @@
 		t.cg = t.find("col"); 						//a table can also contain a colgroup with col elements		
 		t.ln = th.length;							//table length is stored	
 		if(t.p && S && S[t.id])memento(t,th);		//if 'postbackSafe' is enabled and there is data for the current table, its coloumn layout is restored
-		th.each(function(i){						//iterate through the table column headers			
+		th.each(function(i) {						//iterate through the table column headers			
 			var c = $(this); 						//jquery wrap for the current column			
 			var g = $(t.gc.append('<div class="JCLRgrip"></div>')[0].lastChild); //add the visual node to be used as grip
 			g.t = t; g.i = i; g.c = c;	c.w =c.width();		//some values are stored in the grip's node data
 			t.g.push(g); t.c.push(c);						//the current grip and column are added to its table object
 			c.width(c.w).removeAttr("width");				//the width of the column is converted into pixel-based measurements
-			if (i < t.ln-1)	g.mousedown(onGripMouseDown).append(t.opt.gripInnerHtml).append('<div class="'+SIGNATURE+'" style="cursor:'+t.opt.hoverCursor+'"></div>'); //bind the mousedown event to start dragging 
+			if(i < t.ln-1) g.mousedown(onGripMouseDown).append(t.opt.gripInnerHtml).append('<div class="'+SIGNATURE+'" style="cursor:'+t.opt.hoverCursor+'"></div>'); //bind the mousedown event to start dragging 
 			else g.addClass("JCLRLastGrip").removeClass("JCLRgrip");	//the last grip is used only to store data			
 			g.data(SIGNATURE, {i:i, t:t.attr(ID)});						//grip index and its table name are stored in the HTML 												
 		});

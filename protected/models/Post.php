@@ -21,7 +21,7 @@
 							array(
 								//'criteria'		=>	$criteria,
 								'pagination'	=>	array(
-														'pageSize'	=>	1,
+														'pageSize'	=>	5,
 													),
 							)
 						);

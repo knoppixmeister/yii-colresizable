@@ -12,16 +12,16 @@
 		}
 
 		public function search() {
-			$criteria = new CDbCriteria;
+			//$criteria = new CDbCriteria;
 
-			if(!empty($this->id)) $criteria->compare('id', $this->id, true);
+			//if(!empty($this->id)) $criteria->compare('id', $this->id, true);
 
 			return new CActiveDataProvider(
 							'Post',
 							array(
-								'criteria'		=>	$criteria,
+								//'criteria'		=>	$criteria,
 								'pagination'	=>	array(
-														'pageSize'	=>	20,
+														'pageSize'	=>	1,
 													),
 							)
 						);

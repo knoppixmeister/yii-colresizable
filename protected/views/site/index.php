@@ -16,7 +16,7 @@
 										),
 										'id',
 										'text',
-										array(            // display a column with "view", "update" and "delete" buttons
+										array(
 											'class'	=>	'CButtonColumn',
 										),
 									),
